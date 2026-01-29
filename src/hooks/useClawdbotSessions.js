@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import useWebSocket from './useWebSocket';
 
-const API_BASE = 'http://localhost:3001/api';
+const API_BASE = import.meta.env.VITE_API_URL + '/api';
 
 /**
  * Hook for fetching and managing Clawdbot sessions
@@ -27,7 +27,12 @@ export default function useClawdbotSessions() {
             if (filter.sortBy) params.append('sortBy', filter.sortBy);
             if (filter.sortOrder) params.append('sortOrder', filter.sortOrder);
             
-            const response = await fetch(`${API_BASE}/clawdbot/sessions?${params}`);
+            const response = await fetch(`${API_BASE}/clawdbot/sessions?${params}`, {
+                headers: {
+                    'ngrok-skip-browser-warning': 'true',
+                    'bypass-tunnel-reminder': 'true'
+                }
+            });
             const data = await response.json();
             
             if (data.success) {
@@ -49,7 +54,12 @@ export default function useClawdbotSessions() {
      */
     const fetchStats = useCallback(async () => {
         try {
-            const response = await fetch(`${API_BASE}/clawdbot/stats`);
+            const response = await fetch(`${API_BASE}/clawdbot/stats`, {
+                headers: {
+                    'ngrok-skip-browser-warning': 'true',
+                    'bypass-tunnel-reminder': 'true'
+                }
+            });
             const data = await response.json();
             
             if (data.success) {
@@ -65,7 +75,12 @@ export default function useClawdbotSessions() {
      */
     const fetchSession = useCallback(async (sessionId) => {
         try {
-            const response = await fetch(`${API_BASE}/clawdbot/sessions/${sessionId}`);
+            const response = await fetch(`${API_BASE}/clawdbot/sessions/${sessionId}`, {
+                headers: {
+                    'ngrok-skip-browser-warning': 'true',
+                    'bypass-tunnel-reminder': 'true'
+                }
+            });
             const data = await response.json();
             return data.success ? data.session : null;
         } catch (err) {
@@ -79,7 +94,12 @@ export default function useClawdbotSessions() {
      */
     const fetchSessionLogs = useCallback(async (sessionId) => {
         try {
-            const response = await fetch(`${API_BASE}/clawdbot/sessions/${sessionId}/logs`);
+            const response = await fetch(`${API_BASE}/clawdbot/sessions/${sessionId}/logs`, {
+                headers: {
+                    'ngrok-skip-browser-warning': 'true',
+                    'bypass-tunnel-reminder': 'true'
+                }
+            });
             const data = await response.json();
             return data.success ? data.logs : [];
         } catch (err) {
